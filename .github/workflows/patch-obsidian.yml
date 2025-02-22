@@ -26,6 +26,12 @@ jobs:
           if [ -f latest_version.txt ] && grep -q "$LATEST_VERSION" latest_version.txt; then
             echo "Latest version already processed, skipping."
             exit 0
+          else
+            git config --global user.name "github-actions"
+            git config --global user.email "github-actions@github.com"
+            git add latest_version.txt
+            git commit -m "Update latest version to ${{ env.LATEST_VERSION }}"
+            git push
           fi
 
       - name: Download APK
