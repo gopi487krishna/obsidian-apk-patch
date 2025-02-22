@@ -49,5 +49,5 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: patched-obsidian
-          path: obsidian-$LATEST_VERSION-patched.apk
+          path: obsidian-${{env.LATEST_VERSION}}-patched.apk
 
