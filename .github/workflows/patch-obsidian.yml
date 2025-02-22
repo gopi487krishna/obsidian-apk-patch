@@ -27,6 +27,7 @@ jobs:
             echo "Latest version already processed, skipping."
             exit 0
           else
+            echo "LATEST_VERSION=$LATEST_VERSION" > latest_version.txt 
             git config --global user.name "github-actions"
             git config --global user.email "github-actions@github.com"
             git add latest_version.txt
