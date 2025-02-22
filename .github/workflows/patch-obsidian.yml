@@ -51,3 +51,10 @@ jobs:
           name: patched-obsidian
           path: obsidian-${{env.LATEST_VERSION}}-patched.apk
 
+      - name: Create GitHub Release and Upload APK
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release create "$LATEST_VERSION" obsidian-$LATEST_VERSION-patched.apk \
+            --title "Obsidian ReVanced Molten $LATEST_VERSION" \
+            --notes "This is an automatically patched version of Obsidian using ReVanced Molten patch."
