@@ -25,6 +25,7 @@ jobs:
         run: |
           if [ -f latest_version.txt ] && grep -q "$LATEST_VERSION" latest_version.txt; then
             echo "Latest version already processed, skipping."
+            echo "SKIP=true" >> $GITHUB_ENV
             exit 0
           else
             echo "LATEST_VERSION=$LATEST_VERSION" > latest_version.txt 
@@ -36,29 +37,35 @@ jobs:
           fi
 
       - name: Download APK
+        if: env.SKIP != 'true'
         run: |
           APK_URL="https://github.com/obsidianmd/obsidian-releases/releases/download/v$LATEST_VERSION/obsidian-$LATEST_VERSION.apk"
           curl -L $APK_URL -o obsidian-$LATEST_VERSION.apk
 
       - name: Setup ReVanced CLI
+        if: env.SKIP != 'true'
         run: |
           wget https://github.com/ReVanced/revanced-cli/releases/download/v5.0.0/revanced-cli-5.0.0-all.jar -O revanced-cli.jar
           wget https://github.com/Faith001/revanced-molten-glass/releases/download/mg-1.0.0/patches-mg-1.0.0.rvp
 
       - name: Patch APK
+        if: env.SKIP != 'true'
         run: |
           java -jar revanced-cli.jar patch -p patches-mg-1.0.0.rvp obsidian-$LATEST_VERSION.apk
 
       - name: Save version
+        if: env.SKIP != 'true'
         run: echo "$LATEST_VERSION" > latest_version.txt
 
       - name: Upload patched APK as artifact
+        if: env.SKIP != 'true'
         uses: actions/upload-artifact@v4
         with:
           name: patched-obsidian
           path: obsidian-${{env.LATEST_VERSION}}-patched.apk
 
       - name: Create GitHub Release and Upload APK
+        if: env.SKIP != 'true'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
