@@ -2,7 +2,7 @@ name: Patch Obsidian with revanced Molten glass
 
 on:
   schedule:
-    - cron: '0 0 * * *'  # Runs daily at midnight UTC
+    - cron: '0 0 1 */2 *'  # Runs on day 1 every 2 months
   workflow_dispatch:  # Allows manual triggering
 
 jobs:
